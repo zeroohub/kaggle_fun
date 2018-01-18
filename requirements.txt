@@ -9,3 +9,4 @@ pandas
 ipython<6.0
 kaggle-cli
 jupyter
+scikit-learn

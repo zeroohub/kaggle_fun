@@ -2,15 +2,16 @@
 from __future__ import unicode_literals
 from keras.applications.vgg16 import WEIGHTS_PATH, get_file
 from keras.models import Sequential
-from keras.layers import Conv2D, Input, MaxPooling2D, Dense, Flatten
-
+from keras.layers import Conv2D, InputLayer, MaxPooling2D, Dense, Flatten, Lambda
+from keras.applications.imagenet_utils import preprocess_input
 
 class VGG16(object):
 
     def __init__(self):
         super(VGG16, self).__init__()
         self.model = Sequential()
-        self.model.add(Input((224, 224, 3)))
+        self.model.add(InputLayer((224, 224, 3)))
+        self.model.add(Lambda(preprocess_input))
         self.build_conv_blocks()
         self.build_fc_blocks()
         self.model.load_weights(get_file('vgg16_weights_tf_dim_ordering_tf_kernels.h5',
@@ -43,7 +44,7 @@ class VGG16(object):
     def get_model(cls, units=1000):
         vgg = cls()
         vgg.model.pop()
-        vgg.model.add(Dense(units, 'softmax'))
+        vgg.add_dense(units, 'softmax')
         return vgg
 
 

@@ -11,5 +11,3 @@ def get_batches(path, gen=image.ImageDataGenerator(), target_size=(224, 224), cl
                                    class_mode=class_mode, **kwargs)
 
 
-from commands import *
-from vgg16 import *

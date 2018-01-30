@@ -6,7 +6,6 @@ from keras.utils.data_utils import get_file
 from keras.models import Sequential
 from keras.layers.core import Flatten, Dense, Dropout, Lambda
 from keras.layers.convolutional import MaxPooling2D, ZeroPadding2D, Conv2D
-from keras.preprocessing import image
 
 
 vgg_mean = np.array([123.68, 116.779, 103.939], dtype=np.float32).reshape((3, 1, 1))
@@ -58,4 +57,3 @@ def get_model(weight='imagenet'):
         model.load_weights(get_file(fname, 'http://files.fast.ai/models/{}'.format(fname), cache_subdir='models'))
 
     return model
-

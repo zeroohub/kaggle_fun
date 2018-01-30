@@ -11,3 +11,4 @@ kaggle-cli
 jupyter
 scikit-learn
 bcolz
+tensorflow

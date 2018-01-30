@@ -18,7 +18,14 @@ def download_data(comp_name, target_path="data"):
 
 
 def unzip(file_path, target_path):
-    return call('unzip -q {} -d {}'.format(file_path, target_path))
+    suffix = file_path.split('.')[-1]
+    if suffix == 'zip':
+        cmd = 'unzip -q {} -d {}'.format(file_path, target_path)
+    elif suffix == '7z':
+        cmd = '7z x {} -o{}'.format(file_path, target_path)
+    else:
+        raise Exception('Unsupport format')
+    return call(cmd)
 
 def mkdir(*target_path):
     for p in target_path:

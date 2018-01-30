@@ -36,3 +36,20 @@ def make_data_dir(data_path, sample_path):
 
 def count_file(target_path):
     return len([f for f in os.listdir(target_path) if os.path.isfile(os.path.join(target_path, f))])
+
+
+class KaggleCLI(object):
+    def __init__(self, competition_name):
+        super(KaggleCLI, self).__init__()
+        self.competition_name = competition_name
+
+    def download_data(self, data_path='data'):
+        cwd = os.getcwd()
+        target_path = os.path.join(cwd, data_path)
+        mkdir(target_path)
+        os.chdir(target_path)
+        call("kg download -c {}".format(self.competition_name))
+        os.chdir(cwd)
+
+    def submit_result(self, result_path):
+        call('kg')

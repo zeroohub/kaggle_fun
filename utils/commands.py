@@ -18,11 +18,11 @@ def download_data(comp_name, target_path="data"):
 
 
 def unzip(file_path, target_path):
-    suffix = file_path.split('.')[-1]
+    suffix = file_path.split('.')[-1] 
     if suffix == 'zip':
         cmd = 'unzip -q {} -d {}'.format(file_path, target_path)
     elif suffix == '7z':
-        cmd = '7z x {} -o{}'.format(file_path, target_path)
+        cmd = ' 7z x {} -o{}'.format(file_path, target_path)
     else:
         raise Exception('Unsupport format')
     return call(cmd)
@@ -60,3 +60,12 @@ class KaggleCLI(object):
 
     def submit_result(self, result_path):
         call('kg')
+
+
+def execute_in(dir_path, func, *args, **kwargs):
+    cwd = os.getcwd()
+    os.chdir(dir_path)
+    try:
+        return func(*args, **kwargs)
+    finally:
+        os.chdir(cwd)

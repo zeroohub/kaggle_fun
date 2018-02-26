@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 import subprocess
 import os
-
+from os.path import join as pjoin
 
 def call(cmd):
     return subprocess.call(cmd, shell=True)
@@ -60,3 +60,9 @@ def execute_in(dir_path, func, *args, **kwargs):
         return func(*args, **kwargs)
     finally:
         os.chdir(cwd)
+
+
+def unzip_all(dir_path):
+    for zfile in os.listdir(dir_path):
+        if zfile.endswith('.zip'):
+            unzip(pjoin(dir_path, zfile), dir_path)

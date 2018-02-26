@@ -32,15 +32,6 @@ def mkdir(*target_path):
         call('mkdir -p {}'.format(p))
 
 
-def make_data_dir(data_path, sample_path):
-    mkdir(os.path.join(data_path, 'train'))
-    mkdir(os.path.join(data_path, 'test'))
-    mkdir(os.path.join(data_path, 'valid'))
-
-    mkdir(os.path.join(sample_path, 'train'))
-    mkdir(os.path.join(sample_path, 'test'))
-    mkdir(os.path.join(sample_path, 'valid'))
-
 def count_file(target_path):
     return len([f for f in os.listdir(target_path) if os.path.isfile(os.path.join(target_path, f))])
 

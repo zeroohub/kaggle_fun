@@ -2,7 +2,7 @@
 import matplotlib.pyplot as plt
 
 
-def plots(images, columns=4):
+def plot_images(images, columns=4):
     fig = plt.figure(figsize=(20, 10))
     rows = int(len(images) / columns) + 1
 

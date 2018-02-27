@@ -49,8 +49,8 @@ class KaggleCLI(object):
         call("kg download -c {}".format(self.competition_name))
         os.chdir(cwd)
 
-    def submit_result(self, result_path):
-        call('kg')
+    def submit_result(self, result_path, msg=''):
+        call('kg submit -c {} -m {} {}'.format(self.competition_name, msg, result_path))
 
 
 def execute_in(dir_path, func, *args, **kwargs):

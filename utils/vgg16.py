@@ -59,3 +59,14 @@ def get_model(weight='imagenet'):
 
     return model
 
+
+def get_data_gen(directory, batch_size=32, gen=None):
+    if not gen:
+        gen = ImageDataGenerator()
+    gen.flow_from_directory = partial(gen.flow_from_directory,
+                                      directory=directory,
+                                      class_mode='categorical',
+                                      target_size=(224, 224),
+                                      shuffle=False,
+                                      batch_size=batch_size)
+    return gen

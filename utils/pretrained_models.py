@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from keras.applications.vgg16 import WEIGHTS_PATH, get_file
+
+from functools import partial
+
+from keras.applications.vgg16 import get_file
 from keras.models import Sequential
-from keras.layers import Conv2D, InputLayer, MaxPooling2D, Dense, Flatten, Lambda
+from keras.layers import Conv2D, InputLayer, MaxPooling2D, Dense, Flatten, Lambda, Dropout
 from keras.applications.imagenet_utils import preprocess_input
+from keras.preprocessing.image import ImageDataGenerator
+
 
 class VGG16(object):
 
@@ -14,10 +19,9 @@ class VGG16(object):
         self.model.add(Lambda(preprocess_input))
         self.build_conv_blocks()
         self.build_fc_blocks()
-        self.model.load_weights(get_file('vgg16_weights_tf_dim_ordering_tf_kernels.h5',
-                                         WEIGHTS_PATH,
-                                         cache_subdir='models',
-                                         file_hash='64373286793e3c8b2b4e3219cbf3544b'))
+        self.model.load_weights(get_file('vgg16.h5',
+                                         'http://files.fast.ai/models/' + 'vgg16.h5',
+                                         cache_subdir='models'))
 
     def build_conv_blocks(self):
         self.add_conv(2, 64)
@@ -33,6 +37,7 @@ class VGG16(object):
 
     def add_dense(self, units, activation='relu'):
         self.model.add(Dense(units, activation=activation))
+        self.model.add(Dropout(0.5))
 
     def build_fc_blocks(self):
         self.model.add(Flatten())
@@ -47,4 +52,14 @@ class VGG16(object):
         vgg.add_dense(units, 'softmax')
         return vgg
 
-
+    @staticmethod
+    def get_data_gen(directory, batch_size=32, gen=None):
+        if not gen:
+            gen = ImageDataGenerator()
+        gen.flow_from_directory = partial(gen.flow_from_directory,
+                                          directory=directory,
+                                          class_mode='categorical',
+                                          target_size=(224, 224),
+                                          shuffle=False,
+                                          batch_size=batch_size)
+        return gen

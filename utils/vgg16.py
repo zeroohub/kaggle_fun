@@ -1,7 +1,8 @@
 from __future__ import division, print_function
 
 import numpy as np
-
+from keras.preprocessing.image import ImageDataGenerator
+from functools import partial
 from keras.utils.data_utils import get_file
 from keras.models import Sequential
 from keras.layers.core import Flatten, Dense, Dropout, Lambda
@@ -57,3 +58,4 @@ def get_model(weight='imagenet'):
         model.load_weights(get_file(fname, 'http://files.fast.ai/models/{}'.format(fname), cache_subdir='models'))
 
     return model
+

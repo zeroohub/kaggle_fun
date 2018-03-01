@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 import subprocess
 import os
 from os.path import join as pjoin
+import bcolz
+
 
 def call(cmd):
     return subprocess.call(cmd, shell=True)
@@ -18,7 +20,7 @@ def download_data(comp_name, target_path="data"):
 
 
 def unzip(file_path, target_path):
-    suffix = file_path.split('.')[-1] 
+    suffix = file_path.split('.')[-1]
     if suffix == 'zip':
         cmd = 'unzip -q {} -d {}'.format(file_path, target_path)
     elif suffix == '7z':
@@ -26,6 +28,7 @@ def unzip(file_path, target_path):
     else:
         raise Exception('Unsupport format')
     return call(cmd)
+
 
 def mkdir(*target_path):
     for p in target_path:
@@ -66,3 +69,12 @@ def unzip_all(dir_path):
     for zfile in os.listdir(dir_path):
         if zfile.endswith('.zip'):
             unzip(pjoin(dir_path, zfile), dir_path)
+
+
+def save_array(fname, arr):
+    c = bcolz.carray(arr, rootdir=fname, mode='w')
+    c.flush()
+
+
+def load_array(fname):
+    return bcolz.open(fname)[:]

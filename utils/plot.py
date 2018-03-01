@@ -49,3 +49,43 @@ def plot_confusion_matrix(cm, classes,
     plt.tight_layout()
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
+
+
+def plot_lines(xys, columns=2, figsize=(16, 10)):
+    """
+    :param xys: [{
+            'title': 'accuracy',
+            'ys': {
+                'train': self.accuracy,
+                'valid': self.valid_accuracy,
+            },
+            "x": self.epoch,
+            "xlabel": "epoch",
+            "ylabel": "accuracy",
+
+        }, {...}]
+    :param columns:
+    :param figsize:
+    :return:
+    """
+    fig = plt.figure(figsize=figsize)
+    rows = int(len(xys) / columns) + 1
+    for idx, xy in enumerate(xys):
+        title = xy.get('title', '')
+        ys = xy.get('ys', {})
+        x = xy.get('x', [])
+        xlabel = xy.get('xlabel', "")
+        ylabel = xy.get('ylabel', "")
+
+        ax = fig.add_subplot(rows, columns, idx + 1)
+        ax.set_title(title)
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+        for label, y in ys.iteritems():
+            ax.plot(x, y, label=label)
+            fit = np.polyfit(x, y, deg=2)
+            x = np.array(x)
+            ax.plot(x, fit[0] * np.power(x, 2) + fit[1] * x + fit[2], label='fit-{}'.format(label))
+
+        ax.legend(loc='lower right')
+    plt.show()

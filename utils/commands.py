@@ -70,7 +70,6 @@ def unzip_all(dir_path):
         if zfile.endswith('.zip'):
             unzip(pjoin(dir_path, zfile), dir_path)
 
-
 def save_array(fname, arr):
     c = bcolz.carray(arr, rootdir=fname, mode='w')
     c.flush()

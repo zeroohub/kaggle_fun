@@ -76,16 +76,17 @@ def plot_lines(xys, columns=2, figsize=(16, 10)):
         x = xy.get('x', [])
         xlabel = xy.get('xlabel', "")
         ylabel = xy.get('ylabel', "")
-
+        with_fit = xy.get('fit', True)
         ax = fig.add_subplot(rows, columns, idx + 1)
         ax.set_title(title)
         ax.set_xlabel(xlabel)
         ax.set_ylabel(ylabel)
         for label, y in ys.iteritems():
             ax.plot(x, y, label=label)
-            fit = np.polyfit(x, y, deg=2)
-            x = np.array(x)
-            ax.plot(x, fit[0] * np.power(x, 2) + fit[1] * x + fit[2], label='fit-{}'.format(label))
+            if with_fit:
+                fit = np.polyfit(x, y, deg=2)
+                x = np.array(x)
+                ax.plot(x, fit[0] * np.power(x, 2) + fit[1] * x + fit[2], label='fit-{}'.format(label))
 
-        ax.legend(loc='lower right')
+        ax.legend(loc='lower left')
     plt.show()

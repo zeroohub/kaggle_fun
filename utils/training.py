@@ -66,6 +66,7 @@ class TrainHistory(Callback):
             "x": self.epoch,
             "xlabel": "epoch",
             "ylabel": "loss",
+            'fit': False,
 
         }, {
             'title': 'accuracy',
@@ -76,6 +77,7 @@ class TrainHistory(Callback):
             "x": self.epoch,
             "xlabel": "epoch",
             "ylabel": "accuracy",
+            'fit': False,
 
         }]
         plot_lines(xys)

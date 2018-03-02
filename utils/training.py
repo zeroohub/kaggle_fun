@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from functools import partial
 
-from keras.callbacks import Callback, EarlyStopping
+from keras.callbacks import Callback
 from keras.preprocessing.image import ImageDataGenerator
 
 from .plot import plot_lines
@@ -84,11 +84,7 @@ class TrainHistory(Callback):
 
 
 def fit_generator(model, train_flow, valid_flow, epochs=3, callbacks=None):
-    default_callbacks = [TrainHistory(),
-                         EarlyStopping(monitor='val_loss',
-                                       min_delta=0.002,
-                                       patience=2,
-                                       verbose=1)]
+    default_callbacks = [TrainHistory()]
     if callbacks:
         default_callbacks += callbacks
 

@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from functools import partial
 
 from keras.callbacks import Callback
-from keras.preprocessing.image import ImageDataGenerator
+from keras.preprocessing.image import ImageDataGenerator, DirectoryIterator
 
 from .plot import plot_lines
 
@@ -88,12 +88,15 @@ def fit_generator(model, train_flow, valid_flow, epochs=3, callbacks=None):
     if callbacks:
         default_callbacks += callbacks
 
+    train_type = isinstance(train_flow, DirectoryIterator)
+    valid_type = isinstance(valid_flow, DirectoryIterator)
+
     model.fit_generator(
         train_flow,
-        steps_per_epoch=getattr(train_flow, 'samples', train_flow.x.shape[0]) // train_flow.batch_size,
+        steps_per_epoch=(train_flow.samples if train_type else train_flow.x.shape[0]) // train_flow.batch_size,
         epochs=epochs,
         validation_data=valid_flow,
-        validation_steps=getattr(valid_flow, 'samples', valid_flow.x.shape[0]) // valid_flow.batch_size,
+        validation_steps=(valid_flow.samples if valid_type else valid_flow.x.shape[0]) // valid_flow.batch_size,
         callbacks=default_callbacks
     )
 
